@@ -6,7 +6,7 @@ class Pagination extends React.Component {
       <div className="columns is-centered">
         <div className="column is-half">
           <nav
-            class="pagination is-centered is-rounded"
+            className="pagination is-centered is-rounded"
             role="navigation"
             aria-label="pagination"
             style={{
@@ -14,27 +14,27 @@ class Pagination extends React.Component {
               border: "1px solid #FFFFFF",
             }}
           >
-            <a class="pagination-previous">&lt;&lt; First</a>
-            <a class="pagination-previous">&lt; Previous</a>
-            <a class="pagination-next">Next &gt;</a>
-            <a class="pagination-next">Last &gt;&gt;</a>
-            <ul class="pagination-list">
+            <a className="pagination-previous">&lt;&lt; First</a>
+            <a className="pagination-previous">&lt; Previous</a>
+            <a className="pagination-next">Next &gt;</a>
+            <a className="pagination-next">Last &gt;&gt;</a>
+            <ul className="pagination-list">
               <li>
-                <a class="pagination-link" aria-label="Goto page 1">
+                <a className="pagination-link" aria-label="Goto page 1">
                   1
                 </a>
               </li>
               <li>
-                <span class="pagination-ellipsis">&hellip;</span>
+                <span className="pagination-ellipsis">&hellip;</span>
               </li>
               <li>
-                <a class="pagination-link" aria-label="Goto page 45">
+                <a className="pagination-link" aria-label="Goto page 45">
                   45
                 </a>
               </li>
               <li>
                 <a
-                  class="pagination-link is-current"
+                  className="pagination-link is-current"
                   aria-label="Page 46"
                   aria-current="page"
                 >
@@ -42,15 +42,15 @@ class Pagination extends React.Component {
                 </a>
               </li>
               <li>
-                <a class="pagination-link" aria-label="Goto page 47">
+                <a className="pagination-link" aria-label="Goto page 47">
                   47
                 </a>
               </li>
               <li>
-                <span class="pagination-ellipsis">&hellip;</span>
+                <span className="pagination-ellipsis">&hellip;</span>
               </li>
               <li>
-                <a class="pagination-link" aria-label="Goto page 86">
+                <a className="pagination-link" aria-label="Goto page 86">
                   86
                 </a>
               </li>
