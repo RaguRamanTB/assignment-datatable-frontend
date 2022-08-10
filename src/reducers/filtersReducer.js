@@ -1,4 +1,4 @@
-import { UPDATE_FILTERS } from "../actions/types";
+import { UPDATE_FILTERS, UPDATE_CURRENT_PAGE } from "../actions/types";
 
 const filtersReducer = (state = {}, action) => {
   switch (action.type) {
@@ -6,6 +6,12 @@ const filtersReducer = (state = {}, action) => {
       return {
         ...state,
         filters: action.payload,
+      };
+
+    case UPDATE_CURRENT_PAGE:
+      return {
+        ...state,
+        currentPage: action.payload,
       };
 
     default:

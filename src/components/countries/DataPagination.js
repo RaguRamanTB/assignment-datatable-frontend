@@ -1,7 +1,11 @@
 import React from "react";
 import { Pagination, Grid } from "@mui/material";
 import { connect } from "react-redux";
-import { fetchCountries, fetchCountryCount } from "../../actions";
+import {
+  fetchCountries,
+  fetchCountryCount,
+  updateCurrentPage,
+} from "../../actions";
 
 class DataPagination extends React.Component {
   constructor(props) {
@@ -15,9 +19,15 @@ class DataPagination extends React.Component {
 
   handlePaginationChange = (_event, page) => {
     const { filters } = this.props;
+    this.props.updateCurrentPage(page);
     if (filters) {
       const offset = filters.numOfRowsValue * (page - 1);
-      this.props.fetchCountries(filters.numOfRowsValue, offset, filters.sortByValue, filters.orderByValue);
+      this.props.fetchCountries(
+        filters.numOfRowsValue,
+        offset,
+        filters.sortByValue,
+        filters.orderByValue
+      );
     } else {
       const offset = 5 * (page - 1);
       this.props.fetchCountries(5, offset, "id", "ASC");
@@ -69,4 +79,5 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps, {
   fetchCountries,
   fetchCountryCount,
+  updateCurrentPage,
 })(DataPagination);

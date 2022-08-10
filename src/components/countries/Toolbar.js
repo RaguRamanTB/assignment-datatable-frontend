@@ -31,12 +31,25 @@ class Toolbar extends React.Component {
         orderByValue: this.state.orderByValue,
       };
       this.props.updateFilters(filters);
-      this.props.fetchCountries(
-        this.state.numOfRowsValue,
-        0,
-        this.state.sortByValue,
-        this.state.orderByValue
-      );
+      if (this.props.currentPage) {
+        let offset = (this.props.currentPage - 1) * this.state.numOfRowsValue;
+        if (offset > this.props.count) {
+          offset = 0;
+        }
+        this.props.fetchCountries(
+          this.state.numOfRowsValue,
+          offset,
+          this.state.sortByValue,
+          this.state.orderByValue
+        );
+      } else {
+        this.props.fetchCountries(
+          this.state.numOfRowsValue,
+          0,
+          this.state.sortByValue,
+          this.state.orderByValue
+        );
+      }
     }
   }
 
@@ -154,6 +167,8 @@ const mapStateToProps = (state) => {
   return {
     countries: state.countries.countries,
     filters: state.filters.filters,
+    currentPage: state.filters.currentPage,
+    count: state.countries.count,
   };
 };
 

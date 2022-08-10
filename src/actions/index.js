@@ -7,6 +7,7 @@ import {
   FETCH_COUNTRY_COUNT,
   FETCH_COUNTRY_COUNT_FAILED,
   FETCH_COUNTRY_COUNT_LOADING,
+  UPDATE_CURRENT_PAGE,
 } from "./types";
 
 export const fetchCountries =
@@ -54,4 +55,11 @@ export const fetchCountryCount = () => async (dispatch) => {
           "Error occurred while loading the count of countries, please try again.",
       });
     });
+};
+
+export const updateCurrentPage = (pageNumber) => async (dispatch) => {
+  dispatch({
+    type: UPDATE_CURRENT_PAGE,
+    payload: pageNumber,
+  });
 };
