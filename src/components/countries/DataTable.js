@@ -23,7 +23,6 @@ class DataTable extends React.Component {
 
   render() {
     const { countries } = this.props;
-    console.log(countries);
     if (countries) {
       return (
         <table className="styled-table">
