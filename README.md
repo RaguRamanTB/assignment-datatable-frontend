@@ -4,7 +4,7 @@ DataTable is a simple web-based datatable that supports pagination, sorting, sea
 
 ## Installation
 
-Clone the repository and use [Node.js](https://nodejs.org/en/download/) and package manager to install and run DataTable.
+Clone the repository and use [Node.js](https://nodejs.org/en/download/) and package manager **npm** to install and run DataTable.
 
 ```bash
 cd assignment-datatable-frontend\
