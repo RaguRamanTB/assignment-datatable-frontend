@@ -5,6 +5,7 @@ import {
   FETCH_COUNTRY_COUNT,
   FETCH_COUNTRY_COUNT_FAILED,
   FETCH_COUNTRY_COUNT_LOADING,
+  UPDATE_FILTERED_COUNTRIES,
 } from "../actions/types";
 
 const countriesReducer = (state = {}, action) => {
@@ -57,6 +58,12 @@ const countriesReducer = (state = {}, action) => {
         countLoading: false,
         countLoaded: true,
         countError: action.payload,
+      };
+
+    case UPDATE_FILTERED_COUNTRIES:
+      return {
+        ...state,
+        filteredCountries: action.payload,
       };
 
     default:

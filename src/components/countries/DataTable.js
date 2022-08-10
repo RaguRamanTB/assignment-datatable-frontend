@@ -22,8 +22,14 @@ class DataTable extends React.Component {
   };
 
   render() {
-    const { countries } = this.props;
+    const { countries, filteredCountries } = this.props;
     if (countries) {
+      let countryEntries = [];
+      if (filteredCountries) {
+        countryEntries = filteredCountries;
+      } else {
+        countryEntries = countries;
+      }
       return (
         <table className="styled-table">
           <thead>
@@ -36,7 +42,7 @@ class DataTable extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {countries.map((country) => {
+            {countryEntries.map((country) => {
               return this.renderRow(country);
             })}
           </tbody>
@@ -50,6 +56,7 @@ class DataTable extends React.Component {
 const mapStateToProps = (state) => {
   return {
     countries: state.countries.countries,
+    filteredCountries: state.countries.filteredCountries,
   };
 };
 

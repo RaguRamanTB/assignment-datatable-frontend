@@ -8,6 +8,7 @@ import {
   FETCH_COUNTRY_COUNT_FAILED,
   FETCH_COUNTRY_COUNT_LOADING,
   UPDATE_CURRENT_PAGE,
+  UPDATE_FILTERED_COUNTRIES,
 } from "./types";
 
 export const fetchCountries =
@@ -63,3 +64,11 @@ export const updateCurrentPage = (pageNumber) => async (dispatch) => {
     payload: pageNumber,
   });
 };
+
+export const updateFilteredCountries =
+  (filteredCountries) => async (dispatch) => {
+    dispatch({
+      type: UPDATE_FILTERED_COUNTRIES,
+      payload: filteredCountries,
+    });
+  };

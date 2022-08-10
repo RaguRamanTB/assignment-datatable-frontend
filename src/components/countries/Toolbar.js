@@ -1,13 +1,16 @@
 import React from "react";
 import { connect } from "react-redux";
-import { fetchCountries, updateFilters } from "../../actions";
+import {
+  fetchCountries,
+  updateFilters,
+  updateFilteredCountries,
+} from "../../actions";
 
 class Toolbar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       numOfRowsValue: "5",
-      searchValue: "",
       sortByValue: "id",
       orderByValue: "ASC",
     };
@@ -20,13 +23,11 @@ class Toolbar extends React.Component {
   componentDidUpdate(_prevProps, prevState) {
     if (
       this.state.numOfRowsValue !== prevState.numOfRowsValue ||
-      this.state.searchValue !== prevState.searchValue ||
       this.state.sortByValue !== prevState.sortByValue ||
       this.state.orderByValue !== prevState.orderByValue
     ) {
       const filters = {
         numOfRowsValue: this.state.numOfRowsValue,
-        searchValue: this.state.searchValue,
         sortByValue: this.state.sortByValue,
         orderByValue: this.state.orderByValue,
       };
@@ -59,10 +60,116 @@ class Toolbar extends React.Component {
     });
   };
 
+  isValidSearchString = (searchArray) => {
+    const columnNames = ["id", "country", "capital", "population", "timezone"];
+    const operationTypes = ["lt", "gt", "eq", "regex"];
+    if (searchArray.length === 2) {
+      return columnNames.includes(searchArray[0]) && searchArray[1] !== "";
+    } else if (searchArray.length === 3) {
+      return (
+        columnNames.includes(searchArray[0]) &&
+        operationTypes.includes(searchArray[1]) &&
+        searchArray[2] !== ""
+      );
+    }
+    return false;
+  };
+
+  parseSearchString = (searchValue) => {
+    let dotIdx = searchValue.indexOf(".");
+    let colonIdx = searchValue.indexOf(":");
+    let column, operation, value;
+    let result = {
+      values: [],
+      type: 0,
+    };
+    if (dotIdx !== -1 && colonIdx !== -1) {
+      column = searchValue.slice(0, dotIdx);
+      operation = searchValue.slice(dotIdx + 1, colonIdx);
+      value = searchValue.slice(colonIdx + 1);
+      result.values.push(column);
+      result.values.push(operation);
+      result.values.push(value);
+      result.type = 1;
+    } else if (colonIdx > dotIdx) {
+      column = searchValue.slice(0, colonIdx);
+      value = searchValue.slice(colonIdx + 1);
+      result.values.push(column);
+      result.values.push(value);
+      result.type = 2;
+    }
+    return result;
+  };
+
+  filterCountriesUsingSearch = (result) => {
+    const columnMap = {
+      id: "id",
+      country: "name",
+      capital: "capital",
+      timezone: "timezone",
+      population: "population",
+    };
+    const { countries } = this.props;
+    let filteredCountries = [];
+    if (result.type === 1) {
+      const columnName = columnMap[result.values[0]];
+      const operation = result.values[1];
+      const value = result.values[2];
+      switch (operation) {
+        case "lt":
+          filteredCountries = countries.filter((country) => {
+            return country[columnName] < parseInt(value);
+          });
+          break;
+
+        case "gt":
+          filteredCountries = countries.filter((country) => {
+            return country[columnName] > parseInt(value);
+          });
+          break;
+
+        case "eq":
+          filteredCountries = countries.filter((country) => {
+            return country[columnName] === parseInt(value);
+          });
+          break;
+
+        case "regex":
+          filteredCountries = countries.filter((country) => {
+            let regExp = new RegExp(value);
+            return regExp.test(country[columnName]);
+          });
+          break;
+
+        default:
+          filteredCountries = countries;
+          break;
+      }
+    } else if (result.type === 2) {
+      const columnName = columnMap[result.values[0]];
+      const value = result.values[1];
+      filteredCountries = countries.filter((country) => {
+        // eslint-disable-next-line eqeqeq
+        return country[columnName] == value;
+      });
+    }
+    if (filteredCountries.length > 0) {
+      this.props.updateFilteredCountries(filteredCountries);
+    }
+  };
+
   handleSearchChange = (event) => {
-    this.setState({
-      searchValue: event.target.value,
-    });
+    if (event.target.value !== "") {
+      const result = this.parseSearchString(event.target.value);
+      if (result.values.length > 1) {
+        const isValid = this.isValidSearchString(result.values);
+        if (isValid) {
+          this.filterCountriesUsingSearch(result);
+        }
+      }
+    } else {
+      this.props.updateFilteredCountries(null);
+    }
   };
 
   handleSortByChange = (event) => {
@@ -119,7 +226,6 @@ class Toolbar extends React.Component {
                     className="input"
                     type="text"
                     placeholder="Search"
-                    value={this.state.searchValue}
                     onChange={this.handleSearchChange}
                   />
                 </div>
@@ -175,4 +281,5 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps, {
   fetchCountries,
   updateFilters,
+  updateFilteredCountries,
 })(Toolbar);
