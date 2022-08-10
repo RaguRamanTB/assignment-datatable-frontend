@@ -2,6 +2,9 @@ import {
   FETCH_COUNTRIES,
   FETCH_COUNTRIES_FAILED,
   FETCH_COUNTRIES_LOADING,
+  FETCH_COUNTRY_COUNT,
+  FETCH_COUNTRY_COUNT_FAILED,
+  FETCH_COUNTRY_COUNT_LOADING,
 } from "../actions/types";
 
 const countriesReducer = (state = {}, action) => {
@@ -29,6 +32,31 @@ const countriesReducer = (state = {}, action) => {
         loading: false,
         loaded: true,
         error: action.payload,
+      };
+
+    case FETCH_COUNTRY_COUNT_LOADING:
+      return {
+        ...state,
+        countLoading: true,
+        countLoaded: false,
+        countError: null,
+      };
+
+    case FETCH_COUNTRY_COUNT:
+      return {
+        ...state,
+        count: action.payload.count,
+        countLoading: false,
+        countLoaded: true,
+        countError: null,
+      };
+
+    case FETCH_COUNTRY_COUNT_FAILED:
+      return {
+        ...state,
+        countLoading: false,
+        countLoaded: true,
+        countError: action.payload,
       };
 
     default:

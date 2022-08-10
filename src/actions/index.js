@@ -4,6 +4,9 @@ import {
   FETCH_COUNTRIES_FAILED,
   FETCH_COUNTRIES_LOADING,
   UPDATE_FILTERS,
+  FETCH_COUNTRY_COUNT,
+  FETCH_COUNTRY_COUNT_FAILED,
+  FETCH_COUNTRY_COUNT_LOADING,
 } from "./types";
 
 export const fetchCountries =
@@ -31,4 +34,24 @@ export const updateFilters = (filters) => async (dispatch) => {
     type: UPDATE_FILTERS,
     payload: filters,
   });
+};
+
+export const fetchCountryCount = () => async (dispatch) => {
+  dispatch({ type: FETCH_COUNTRY_COUNT_LOADING });
+  countries
+    .get(`/countries/`)
+    .then((response) => {
+      dispatch({
+        type: FETCH_COUNTRY_COUNT,
+        payload: response.data[0],
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+      dispatch({
+        type: FETCH_COUNTRY_COUNT_FAILED,
+        payload:
+          "Error occurred while loading the count of countries, please try again.",
+      });
+    });
 };
